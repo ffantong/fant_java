@@ -1,0 +1,1 @@
+tool是一个数据分析工具，可以根据conf.xml的配置将数据库表的数据导出到Excel，支持oracle，mysql，db2

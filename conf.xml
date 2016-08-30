@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root
+	xmlns="http://www.ffantong.com/tool" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ffantong.com/tool tool.xsd">
+	<connection>
+		<!-- <db_typ>oracle</db_typ>
+		<url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
+		<username>test</username>
+		<password>test</password>
+		<type_detact>Y</type_detact> -->
+		<db_typ>mysql</db_typ>
+		<url>jdbc:mysql://127.0.0.1/gltest?useUnicode=true&amp;characterEncoding=UTF-8</url>
+		<username>root</username>
+		<password>ffantong</password>
+		<type_detact>Y</type_detact>
+		<!-- <db_typ>DB2</db_typ>
+		<url>jdbc:db2://127.0.0.1:50000/TEST:currentSchema=TEST;</url>
+		<username>test</username>
+		<password>test</password>
+		<type_detact>Y</type_detact> -->
+		<output_path>C:/Users/fengxw/Desktop</output_path>
+		<file_type>xlsx</file_type>
+	</connection>
+	<parse_field>
+		<date>*_DT</date>
+	</parse_field>
+	<condition>
+		<attr file_name="test">
+			<property name="loan_no" value="34190660116709376"/>
+			<property name="attr1" value="1018909234190660116709376"/>
+			<property name="attr2" value="15000" type="float"/>
+		</attr>
+	</condition>
+	<result>
+		<!-- <sheet sheet_name ="test sheet1">
+			<table name = "lm_loan">
+				<where auto="AND">attr1, attr2</where>
+				<where auto="or">amount, gen_gl_no</where>
+				<field>*</field>
+			</table>
+		</sheet> -->
+		<sheet sheet_name="test sheet2">
+			<table name = "lm_loan" use_sql="true" title = "使用sql查询示例">
+				<sql>select * from lm_loan where loan_no = ?</sql>
+			</table>
+		</sheet>
+	</result>
+</root>

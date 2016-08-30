@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<connection>
+		<db_typ>mysql</db_typ>
+		<url>jdbc:mysql://127.0.0.1/test?useUnicode=true&amp;characterEncoding=UTF-8</url>
+		<username>root</username>
+		<password>ffantong</password>
+	</connection>
+	<condition>
+		<attr file_name = "HT2015052413113077935"><!--file_name可选属性  默认借据号.xsl-->
+			<loan_no>HT2015052413113077935</loan_no>
+		</attr>
+		<attr>
+			<loan_no>HT201508031600000006184001</loan_no>
+		</attr>
+	</condition>
+	<result>
+		<sheet sheet_name = ""><!--sheet_name可选属性  默认sheet1累加-->
+			<table name = "Lm_loan" title = "借据表">
+				<field>*</field>
+				<order></order>
+			</table>
+			<table name = "Lm_pm_shd">
+				<field>*</field>
+				<order></order>
+			</table>
+		</sheet>
+		<sheet>
+			<table name = "Lm_ln_info">
+				<field>*</field>
+				<order></order>
+			</table>
+			<table name = "Lm_acct_info">
+				<field>*</field>
+				<order></order>
+			</table>
+		</sheet>
+	</result>
+</root>

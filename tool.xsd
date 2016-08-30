@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.ffantong.com/tool" targetNamespace="http://www.ffantong.com/tool"
+	elementFormDefault="qualified">
+	<xsd:element name="root">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="connection" minOccurs="1" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>数据库连接配置</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="parse_field" minOccurs="1" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>需要特殊转换的字段，只支持转换为Date</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="condition" minOccurs="1" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>查询条件配置</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element ref="result" minOccurs="1" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>输出样式和查询数据表配置</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="connection">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="db_typ" type="dbTyp" minOccurs="1" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>数据库类型：oracle,mysql,db2 不区分大小写</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="url" type="xsd:string" minOccurs="1" maxOccurs="1" />
+				<xsd:element name="username" type="xsd:string" minOccurs="1" maxOccurs="1" />
+				<xsd:element name="password" type="xsd:string" minOccurs="1" maxOccurs="1" />
+				<xsd:element name="type_detact" type="typeDetact" minOccurs="0" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>是否对输出字段进行检测：Y/N</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="output_path" type="xsd:string" minOccurs="0" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>输出到目录，可选属性</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="file_type" type="fileType" default="xls" minOccurs="0" maxOccurs="1" >
+					<xsd:annotation>
+						<xsd:documentation>输出文件类型，xls/xlsx</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:simpleType name="dbTyp">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(O|o)(R|r)(A|a)(C|c)(L|l)(E|e)" />
+			<xsd:pattern value="(D|d)(B|b)2" />
+			<xsd:pattern value="(M|m)(Y|y)(S|s)(Q|q)(L|l)" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="typeDetact">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="Y|y|N|n" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="fileType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="xls" />
+			<xsd:enumeration value="xlsx" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="parse_field">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="date" type="xsd:string" minOccurs="0" maxOccurs="unbounded" >
+					<xsd:annotation>
+						<xsd:documentation>字段名，*代表任意</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="condition">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="attr" minOccurs="1" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="attr">
+		<xsd:annotation>
+			<xsd:documentation>一个attr标签对应一个文件，可多个</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="property" type="propertyType" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+			<xsd:attribute name="file_name" type="xsd:string" use="optional" >
+				<xsd:annotation>
+					<xsd:documentation>输出文件名，如不输入则为第一个属性值</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="propertyType">
+		<xsd:attribute name="name" type="xsd:string" use="required" >
+			<xsd:annotation>
+				<xsd:documentation>字段名</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="value" type="xsd:string" use="required" >
+			<xsd:annotation>
+				<xsd:documentation>字段值</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="type" type="dataType" use="optional" >
+			<xsd:annotation>
+				<xsd:documentation>字段类型，如不输入，则默认string</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="dataType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="short"></xsd:enumeration>
+			<xsd:enumeration value="int"></xsd:enumeration>
+			<xsd:enumeration value="long"></xsd:enumeration>
+			<xsd:enumeration value="float"></xsd:enumeration>
+			<xsd:enumeration value="double"></xsd:enumeration>
+			<xsd:enumeration value="string"></xsd:enumeration>
+			<xsd:enumeration value="date"></xsd:enumeration>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="result">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="sheet" type="sheetType" minOccurs="1" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="sheetType">
+		<xsd:annotation>
+			<xsd:documentation>单个sheet标签对应excel的一个sheet页</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="table" type="tableType" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="sheet_name" type="xsd:string" use="optional" >
+			<xsd:annotation>
+				<xsd:documentation>sheet页的名字</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:complexType name="tableType">
+		<xsd:annotation>
+			<xsd:documentation>table标签属性，use_sql为true时使用自定义sql语句导出，否则根据table_name,where,field,order,自动拼接SQL执行</xsd:documentation>
+		</xsd:annotation>
+		<xsd:choice>
+			<xsd:sequence>
+				<xsd:element name="where" type="whereType" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="field" type="xsd:string" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="order" type="xsd:string" minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
+			<xsd:sequence>
+				<xsd:element name="sql" type="xsd:string" minOccurs="1" maxOccurs="1" />
+			</xsd:sequence>
+		</xsd:choice>
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="title" type="xsd:string" use="optional" />
+		<xsd:attribute name="use_sql" type="xsd:boolean" use="optional" />
+	</xsd:complexType>
+	<xsd:complexType name="whereType" mixed="true">
+		<xsd:attribute name="auto" type="autoType" use="optional" />
+	</xsd:complexType>
+	<xsd:simpleType name="autoType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="AND|OR"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema> 
